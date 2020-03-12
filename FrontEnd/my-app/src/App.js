@@ -99,16 +99,19 @@ class App extends React.Component {
   }
  
   edit(id){
+   
     axios.get(`http://localhost:4000/products/${id}`)
     .then((res)=>{
+      var imgUrl = `http://localhost:4000/${res.data.ImgPath}`;
+      var newimgUrl=imgUrl.replace("Product/","");
+      console.log(newimgUrl)
       this.setState({
-        ImgPath:`http://localhost:4000/${res.data.ImgPath}`,
+        ImgPath:newimgUrl,
         Title:res.data.Title,
         Description:res.data.Description,
         Price:res.data.Price
       })
     })
-    console.log(this.state)
   }
 
   render(){
