@@ -57,7 +57,7 @@ router.get('/:id',(req,res)=>{
     });
 });
 
-router.put('/:id',(req,res)=>{
+router.put('/:id',upload.single('ImgPath'),(req,res)=>{
     let id = req.params.id;
     ProductController.update(id,req.body).then((data)=>{
         res.status(data.status).send(data.message);

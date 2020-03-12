@@ -15,7 +15,9 @@ class App extends React.Component {
       ImgPath:'',
       searchVal:'',
       ErrorMsg:'',
-      toastTheme:''
+      toastTheme:'',
+      ImgfileType:'file',
+      SubmitBtnType:'SUBMIT'
     }
    
   }
@@ -32,7 +34,9 @@ class App extends React.Component {
         ImgPath:'',
         searchVal:'',
         ErrorMsg:'',
-        toastTheme:''
+        toastTheme:'',
+        ImgfileType:'file',
+        SubmitBtnType:'SUBMIT'
       })
         
     }
@@ -57,7 +61,6 @@ class App extends React.Component {
   }
 
   fileChange=event=>{
-    console.log(event.target.files[0])
     let file=event.target.files[0]
     this.setState({
       ImgPath:file
@@ -83,7 +86,6 @@ class App extends React.Component {
   }
 
   submit(event,id){
-
     let file=this.state.ImgPath
     let formData=new FormData()
 
@@ -92,10 +94,9 @@ class App extends React.Component {
     formData.append('Description',this.state.Description)
     formData.append('Price',this.state.Price)
     event.preventDefault(); 
-
+   
 
     if(id===0){
- 
       axios({
         url:`http://localhost:4000/products/`,
         method:"POST",
@@ -117,7 +118,6 @@ class App extends React.Component {
           })
         }
         this.notify()
-        console.log(res.data)
         this.componentDidMount()
       }).catch((err)=>{
         console.log(err)
@@ -126,12 +126,28 @@ class App extends React.Component {
     else{
       axios({
         url:`http://localhost:4000/products/${id}`,
-        method:"POST",
+        method:"PUT",
         headers: { 'content-type': 'multipart/form-data' },
         data:formData
       })
-      .then(()=>{
+      .then((res)=>{
+        this.setState({
+          ErrorMsg:res.data
+        })
+        if(res.data!=='success'){
+          this.setState({
+            toastTheme:toast.TYPE.ERROR
+          })
+        }
+        else{
+          this.setState({
+            toastTheme:toast.TYPE.SUCCESS
+          })
+        }
+        this.notify()
         this.componentDidMount()
+      }).catch((err)=>{
+        console.log(err)
       })
     }
   }
@@ -144,17 +160,19 @@ class App extends React.Component {
   }
  
   edit(id){
-   
+    
     axios.get(`http://localhost:4000/products/${id}`)
     .then((res)=>{
       var imgUrl = `http://localhost:4000/${res.data.ImgPath}`;
       var newimgUrl=imgUrl.replace("Product/","");
-      console.log(id)
       this.setState({
+        id:res.data._id,
         ImgPath:newimgUrl,
         Title:res.data.Title,
         Description:res.data.Description,
-        Price:res.data.Price
+        Price:res.data.Price,
+        ImgfileType:'hidden',
+        SubmitBtnType:'UPDATE'
       })
     })
   }
@@ -184,9 +202,9 @@ class App extends React.Component {
         <img src={this.state.ImgPath} ></img>
         <div className="input-field col s12">
           
-          <input onChange={(e)=>this.fileChange(e)} type="file" id="autocomplete-input" className="autocomplete"  />
+          <input onChange={(e)=>this.fileChange(e)} type={this.state.ImgfileType} id="autocomplete-input" className="autocomplete"  />
         </div>
-        <button className="btn waves-effect waves-light right" type="submit" name="action">Submit
+        <button className="btn waves-effect waves-light right" type="submit" name="action">{this.state.SubmitBtnType}
                 <i className="material-icons right">send</i>
         </button>
       </form>
