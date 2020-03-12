@@ -4,7 +4,7 @@ var ProductController = require('./Product.Controller');
 const multer=require('multer');
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
-      cb(null, './uploads/');
+      cb(null, './Product/uploads/');
     },
     filename: function(req, file, cb) {
       cb(null, new Date().toISOString() + file.originalname);
@@ -37,6 +37,7 @@ router.post("/", upload.single('ImgPath'),(req,res)=>{
         res.status(err.status).send(err.message);
     });
 });
+
 
 router.get('/',(req,res)=>{
     let query = req.params.query;
