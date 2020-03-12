@@ -14,7 +14,8 @@ class App extends React.Component {
       Price:'',
       ImgPath:'',
       searchVal:'',
-      ErrorMsg:''
+      ErrorMsg:'',
+      toastTheme:''
     }
    
   }
@@ -30,7 +31,8 @@ class App extends React.Component {
         Price:'',
         ImgPath:'',
         searchVal:'',
-        ErrorMsg:''
+        ErrorMsg:'',
+        toastTheme:''
       })
         
     }
@@ -55,6 +57,7 @@ class App extends React.Component {
   }
 
   fileChange=event=>{
+    console.log(event.target.files[0])
     let file=event.target.files[0]
     this.setState({
       ImgPath:file
@@ -103,6 +106,16 @@ class App extends React.Component {
         this.setState({
           ErrorMsg:res.data
         })
+        if(res.data!=='success'){
+          this.setState({
+            toastTheme:toast.TYPE.ERROR
+          })
+        }
+        else{
+          this.setState({
+            toastTheme:toast.TYPE.SUCCESS
+          })
+        }
         this.notify()
         console.log(res.data)
         this.componentDidMount()
@@ -146,7 +159,7 @@ class App extends React.Component {
     })
   }
 
-  notify = () => toast(this.state.ErrorMsg,{type: toast.TYPE.ERROR});
+  notify = () => toast(this.state.ErrorMsg,{type: this.state.toastTheme});
   render(){
   return (
     <div className="row">
@@ -168,7 +181,7 @@ class App extends React.Component {
           <input value={this.state.Price} onChange={(e)=>this.priceChange(e)} type="text" id="autocomplete-input" className="autocomplete"  />
           <label htmlFor="autocomplete-input">Price</label>
         </div>
-        <img src={this.state.ImgPath} alt="Girl in a jacket"></img>
+        <img src={this.state.ImgPath} ></img>
         <div className="input-field col s12">
           
           <input onChange={(e)=>this.fileChange(e)} type="file" id="autocomplete-input" className="autocomplete"  />

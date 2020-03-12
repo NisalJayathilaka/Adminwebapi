@@ -25,13 +25,13 @@ var ProductController = function(){
             }
             else{
                 return new Promise((resolve,reject)=>{
-                    resolve({status:200,message:'price err'});
+                    resolve({status:200,message:'Price Should be a number'});
                 })
             }
         }
         else{
             return new Promise((resolve,reject)=>{
-                resolve({status:200,message:'empty Error'});
+                resolve({status:200,message:'Fill all the fields'});
             })
         }
     };
