@@ -17,8 +17,8 @@ class App extends React.Component {
       searchVal:'',
       ErrorMsg:'',
       toastTheme:'',
-      ImgfileType:'file',
-      SubmitBtnType:'SUBMIT'
+      SubmitBtnType:'SUBMIT',
+      editChanger:''
     }
    
   }
@@ -36,8 +36,8 @@ class App extends React.Component {
         searchVal:'',
         ErrorMsg:'',
         toastTheme:'',
-        ImgfileType:'file',
-        SubmitBtnType:'SUBMIT'
+        SubmitBtnType:'SUBMIT',
+        editChanger:''
       })
         
     }
@@ -64,7 +64,8 @@ class App extends React.Component {
   fileChange=event=>{
     let file=event.target.files[0]
     this.setState({
-      ImgPath:file
+      ImgPath:file,
+      editChanger:'imgUpdate'
     })
   }
   searchChange=event=>{
@@ -126,7 +127,7 @@ class App extends React.Component {
     }
     else{
       axios({
-        url:`http://localhost:4000/products/${id}`,
+        url:`http://localhost:4000/products/${this.state.editChanger}/${id}`,
         method:"PUT",
         headers: { 'content-type': 'multipart/form-data' },
         data:formData
@@ -172,7 +173,6 @@ class App extends React.Component {
         Title:res.data.Title,
         Description:res.data.Description,
         Price:res.data.Price,
-        ImgfileType:'hidden',
         SubmitBtnType:'UPDATE'
       })
     })
@@ -219,7 +219,7 @@ class App extends React.Component {
         <img src={this.state.ImgPath} width="400px"></img>
         <div className="input-field col s12">
           
-          <input onChange={(e)=>this.fileChange(e)} type={this.state.ImgfileType} id="autocomplete-input" className="autocomplete"  />
+          <input onChange={(e)=>this.fileChange(e)} type="file" id="autocomplete-input" className="autocomplete"  />
         </div>
         <button className="btn waves-effect waves-light right" type="submit" name="action">{this.state.SubmitBtnType}
                 <i className="material-icons right">send</i>
@@ -241,7 +241,6 @@ class App extends React.Component {
               <th>Title</th>
               <th>Description</th>
               <th>Price</th>
-              <th>View</th>
               <th>Edit</th>
               <th>Delete</th>
           </tr>
@@ -253,11 +252,6 @@ class App extends React.Component {
             <td>{product.Title}</td>
             <td>{product.Description}</td>
             <td>{product.Price}</td>
-            <td> 
-            <button onClick={(e)=>this.view(product._id)} className="btn waves-effect waves-light" type="submit" name="action">
-                <i className="material-icons">visibility</i>
-            </button>
-            </td>
             <td> 
             <button onClick={(e)=>this.edit(product._id)} className="btn waves-effect waves-light" type="submit" name="action">
                 <i className="material-icons">edit</i>

@@ -98,6 +98,40 @@ var ProductController = function(){
         }
     };
 
+
+    this.updatewithImg = (id,data1)=>{
+        var data=data1.body;
+        if(data.Price !=='' && data.Title !=='' && data.Description !==''){
+            if(!isNaN(data.Price)){
+                return new Promise((resolve,reject)=>{
+
+                    let products = {
+                        ImgPath:data1.file.path,
+                        Title:data.Title,
+                        Description:data.Description,
+                        Price:data.Price
+                    };
+                    Products.findByIdAndUpdate({_id: id},products).then(()=>{
+                        resolve({status:200,message:'success'});
+                    }).catch((err)=>{
+                        console.log(err)
+                        reject({status:500,message:'Products updating failed due to Error: '+err});
+                    });
+                })
+            }
+            else{
+                return new Promise((resolve,reject)=>{
+                    resolve({status:200,message:'Price Should be a number'});
+                })
+            }
+        }
+        else{
+            return new Promise((resolve,reject)=>{
+                resolve({status:200,message:'Fill all the fields'});
+            })
+        }
+    };
+
     this.delete = (id)=>{
         return new Promise((resolve,reject)=>{
             Products.findByIdAndDelete(id).then(()=>{
