@@ -12,6 +12,7 @@ app.use(cors());
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 app.use('/',ApplicationRoutes);
+app.use('/uploads', express.static('Product/uploads'));
 
 app.listen(PORT,(err)=>{
    if(err){
