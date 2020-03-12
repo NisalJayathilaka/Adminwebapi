@@ -17,7 +17,7 @@ const fileFilter = (req, file, cb) => {
       cb(null, true);
     } else {
         cb(new Error('invalid file format'), false);
-        return
+        
     }
   };
 
@@ -30,7 +30,6 @@ const fileFilter = (req, file, cb) => {
   });
 
 router.post("/", upload.single('ImgPath'),(req,res)=>{
-    console.log(req.file);
     ProductController.Insert(req).then((data)=>{
         res.status(data.status).send(data.message);
     }).catch((err)=>{

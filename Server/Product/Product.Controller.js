@@ -39,7 +39,7 @@ var ProductController = function(){
     this.retrieve = ()=>{
             return new Promise((resolve,reject)=>{
                 Products.find().then((data)=>{
-                    resolve({status:200,message:{success:true,data:data}});
+                    resolve({status:200,message:data});
                 }).catch((err)=>{
                     reject({status:500,message:'No data to be found. Error: '+err});
                 })
