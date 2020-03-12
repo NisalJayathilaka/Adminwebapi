@@ -68,7 +68,6 @@ var ProductController = function(){
     };
 
     this.update = (id,data)=>{
-        console.log(data)
         if(data.Price !=='' && data.Title !=='' && data.Description !==''){
             if(!isNaN(data.Price)){
                 return new Promise((resolve,reject)=>{

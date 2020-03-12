@@ -1,6 +1,7 @@
 import React from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Swal from 'sweetalert2'
 import axios from 'axios';
 
 class App extends React.Component {
@@ -177,6 +178,22 @@ class App extends React.Component {
     })
   }
 
+  view(id){
+    axios.get(`http://localhost:4000/products/${id}`)
+    .then((res)=>{
+      var imgUrl = `http://localhost:4000/${res.data.ImgPath}`;
+      var newimgUrl=imgUrl.replace("Product/","");
+      this.setState({
+        id:res.data._id,
+        ImgPath:newimgUrl,
+        Title:res.data.Title,
+        Description:res.data.Description,
+        Price:res.data.Price,
+      })
+    })
+    
+  }
+
   notify = () => toast(this.state.ErrorMsg,{type: this.state.toastTheme});
   render(){
   return (
@@ -209,22 +226,6 @@ class App extends React.Component {
         </button>
       </form>
 
-   
-      <button data-target="modal12" className="btn modal-trigger">Modal</button>
-
-
-  <div id="modal12" className="modal">
-    <div className="modal-content">
-      <h4>Modal Header</h4>
-      <p>A bunch of text</p>
-    </div>
-    <div className="modal-footer">
-      <a href="#!" className="modal-close waves-effect waves-green btn-flat">Agree</a>
-    </div>
-  </div>
-
-   
-
     </div>
     <div className="col s6">
     <input value={this.state.searchVal} onChange={(e)=>this.searchChange(e)} type="text" id="autocomplete-input" className="autocomplete"  />
@@ -253,7 +254,7 @@ class App extends React.Component {
             <td>{product.Description}</td>
             <td>{product.Price}</td>
             <td> 
-            <button onClick={(e)=>this.edit(product._id)} className="btn waves-effect waves-light" type="submit" name="action">
+            <button onClick={(e)=>this.view(product._id)} className="btn waves-effect waves-light" type="submit" name="action">
                 <i className="material-icons">visibility</i>
             </button>
             </td>
