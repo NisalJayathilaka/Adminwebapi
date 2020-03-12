@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
@@ -199,7 +199,7 @@ class App extends React.Component {
           <input value={this.state.Price} onChange={(e)=>this.priceChange(e)} type="text" id="autocomplete-input" className="autocomplete"  />
           <label htmlFor="autocomplete-input">Price</label>
         </div>
-        <img src={this.state.ImgPath} ></img>
+        <img src={this.state.ImgPath} width="400px"></img>
         <div className="input-field col s12">
           
           <input onChange={(e)=>this.fileChange(e)} type={this.state.ImgfileType} id="autocomplete-input" className="autocomplete"  />
