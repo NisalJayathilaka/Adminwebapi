@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 
 class App extends React.Component {
@@ -10,11 +12,15 @@ class App extends React.Component {
       Title:'',
       Description:'',
       Price:'',
-      ImgPath:''
+      ImgPath:'',
+      searchVal:'',
+      ErrorMsg:''
     }
+   
   }
+
   componentDidMount(){
-    axios.get('http://localhost:4000/products')
+    axios.get('http://localhost:4000/products/filter/all')
     .then((res)=>{
       this.setState({
         products:res.data,
@@ -22,9 +28,11 @@ class App extends React.Component {
         Title:'',
         Description:'',
         Price:'',
-        ImgPath:''
+        ImgPath:'',
+        searchVal:'',
+        ErrorMsg:''
       })
-          console.log(res.data);
+        
     }
     )
   }
@@ -52,6 +60,24 @@ class App extends React.Component {
       ImgPath:file
     })
   }
+  searchChange=event=>{
+    this.setState({
+      searchVal:event.target.value
+    })
+  }
+
+  searchByTitle(){
+    let param=this.state.searchVal
+    axios.get(`http://localhost:4000/products/filter/${param}`)
+    .then((res)=>{
+      this.setState({
+        products:res.data
+      })})
+  }
+
+  reset(){
+    this.componentDidMount()
+  }
 
   submit(event,id){
 
@@ -62,20 +88,26 @@ class App extends React.Component {
     formData.append('Title',this.state.Title)
     formData.append('Description',this.state.Description)
     formData.append('Price',this.state.Price)
-    console.log(this.state)
     event.preventDefault(); 
 
 
     if(id===0){
-    
+ 
       axios({
-        url:'http://localhost:4000/products',
+        url:`http://localhost:4000/products/`,
         method:"POST",
         headers: { 'content-type': 'multipart/form-data' },
         data:formData
       })
-      .then(()=>{
+      .then((res)=>{
+        this.setState({
+          ErrorMsg:res.data
+        })
+        this.notify()
+        console.log(res.data)
         this.componentDidMount()
+      }).catch((err)=>{
+        console.log(err)
       })
     }
     else{
@@ -104,7 +136,7 @@ class App extends React.Component {
     .then((res)=>{
       var imgUrl = `http://localhost:4000/${res.data.ImgPath}`;
       var newimgUrl=imgUrl.replace("Product/","");
-      console.log(newimgUrl)
+      console.log(id)
       this.setState({
         ImgPath:newimgUrl,
         Title:res.data.Title,
@@ -114,9 +146,11 @@ class App extends React.Component {
     })
   }
 
+  notify = () => toast(this.state.ErrorMsg,{type: toast.TYPE.ERROR});
   render(){
   return (
     <div className="row">
+    <ToastContainer />   
     <div className="col s6">
       <form onSubmit={(e)=>this.submit(e,this.state.id)}>
         <div className="input-field col s12">
@@ -157,10 +191,18 @@ class App extends React.Component {
       <a href="#!" className="modal-close waves-effect waves-green btn-flat">Agree</a>
     </div>
   </div>
-          
+
+   
 
     </div>
     <div className="col s6">
+    <input value={this.state.searchVal} onChange={(e)=>this.searchChange(e)} type="text" id="autocomplete-input" className="autocomplete"  />
+    <button onClick={(e)=>this.searchByTitle()} className="btn waves-effect waves-light" type="submit" name="action">
+                <i className="material-icons">search</i>
+    </button>
+    <button onClick={(e)=>this.reset()} className="btn waves-effect waves-light" type="submit" name="action">
+                <i className="material-icons">cached</i>
+    </button>
     <table>
         <thead>
           <tr>

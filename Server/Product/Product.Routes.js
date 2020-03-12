@@ -38,7 +38,8 @@ router.post("/", upload.single('ImgPath'),(req,res)=>{
 });
 
 
-router.get('/',(req,res)=>{
+
+router.get('/filter/:query',(req,res)=>{
     let query = req.params.query;
     ProductController.retrieve(query).then((data)=>{
         res.status(data.status).send(data.message);

@@ -17,7 +17,7 @@ var ProductController = function(){
 
                     });
                     products.save().then(()=>{
-                        resolve({status:200,message:{success:true,data:data}});
+                        resolve({status:200,message:'success'});
                     }).catch((err)=>{
                         reject({status:500,message:'product creation failed due to Error: '+err});
                     });
@@ -25,18 +25,19 @@ var ProductController = function(){
             }
             else{
                 return new Promise((resolve,reject)=>{
-                    reject({status:500,message:'Price Error'});
+                    resolve({status:200,message:'price err'});
                 })
             }
         }
         else{
             return new Promise((resolve,reject)=>{
-                reject({status:500,message:'empty Error'});
+                resolve({status:200,message:'empty Error'});
             })
         }
     };
 
-    this.retrieve = ()=>{
+    this.retrieve = (query)=>{
+        if(query==="all"){
             return new Promise((resolve,reject)=>{
                 Products.find().then((data)=>{
                     resolve({status:200,message:data});
@@ -44,6 +45,15 @@ var ProductController = function(){
                     reject({status:500,message:'No data to be found. Error: '+err});
                 })
             })
+        }
+        else {
+        return new Promise((resolve,reject)=>{
+            Products.find({Title:query}).then((data)=>{
+                resolve({status:200,message:data});
+            }).catch((err)=>{
+                reject({status:500,message:'No data to be found. Error: '+err});
+            })
+        })}
            };
 
     
