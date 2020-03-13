@@ -49,7 +49,7 @@ var ProductController = function(){
         }
         else {
         return new Promise((resolve,reject)=>{
-            Products.find({Title:query}).then((data)=>{
+        Products.find({"Title":/query/}).then((data)=>{
                 resolve({status:200,message:data});
             }).catch((err)=>{
                 reject({status:500,message:'No data to be found. Error: '+err});

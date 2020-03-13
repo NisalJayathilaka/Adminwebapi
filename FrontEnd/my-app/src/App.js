@@ -178,7 +178,7 @@ class App extends React.Component {
       var imgUrl = `http://localhost:4000/${res.data.ImgPath}`;
       this.setState({
         id:res.data._id,
-        ImgPath:imgUrl,
+        ImgPath:imgUrl.replace("Product\\",""),
         Title:res.data.Title,
         Description:res.data.Description,
         Price:res.data.Price,
@@ -191,7 +191,7 @@ class App extends React.Component {
     axios.get(`http://localhost:4000/products/${id}`)
     .then((res)=>{
       var imgUrl = `http://localhost:4000/${res.data.ImgPath}`;
-      var newimgUrl=imgUrl.replace("Product/","");
+      var newimgUrl=imgUrl.replace("Product\\","");
       this.setState({
         id:res.data._id,
         ImgPath:newimgUrl,
@@ -208,7 +208,7 @@ class App extends React.Component {
   return (
     <div className="row">
     <ToastContainer />   
-    <div className="col s6">
+    <div className="col s5">
       <form onSubmit={(e)=>this.submit(e,this.state.id)}>
         <div className="input-field col s12">
         <label >Title</label>
@@ -231,7 +231,7 @@ class App extends React.Component {
           <input value={this.state.Price} onChange={(e)=>this.priceChange(e)} type="text"  />
           
         </div>
-        <img src={this.state.ImgPath} width="400px"></img>
+        <img src={this.state.ImgPath} width="400px"/>
         <div className="input-field col s12">
           
           <input onChange={(e)=>this.fileChange(e)} type="file" id="autocomplete-input" className="autocomplete"  />
@@ -243,7 +243,7 @@ class App extends React.Component {
       </form>
 
     </div>
-    <div className="col s6">
+    <div className="col s7">
     <div className="input-field col s12">
     <input value={this.state.searchVal} onChange={(e)=>this.searchChange(e)} type="text" id="autocomplete-input" className="autocomplete"  />
     <label >Search by Title</label>
@@ -272,7 +272,7 @@ class App extends React.Component {
             <td>{product.Title}</td>
             <td>{product.Description}</td>
             <td>{product.Price}</td>
-            <td><img src={`http://localhost:4000/${product.ImgPath}`} width="50px" height="50"/></td>
+            <td><img src={`http://localhost:4000/${product.ImgPath.replace("Product\\","")}`} width="50px" height="50"/></td>
             <td> 
             <button onClick={(e)=>this.edit(product._id)} className="btn waves-effect waves-light" type="submit" name="action">
                 <i className="material-icons">edit</i>
