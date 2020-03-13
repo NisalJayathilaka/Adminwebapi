@@ -5,12 +5,13 @@ var ProductController = function(){
 
     this.Insert = (data1)=>{
         var data=data1.body;
-        if(data.ImgPath !=='' && data.Price !=='' && data.Title !=='' && data.Description !==''){
+        if(typeof data1.file  !== 'undefined' && data.Price !=='' && data.Title !=='' && data.Description !==''){
+            var newImgPath=data1.file.path.replace("Product/","");
             if(!isNaN(data.Price)){
                 return new Promise((resolve,reject)=>{
                     let products = new Products({
 
-                        ImgPath:data1.file.path,
+                        ImgPath:newImgPath,
                         Title:data.Title,
                         Description:data.Description,
                         Price:data.Price

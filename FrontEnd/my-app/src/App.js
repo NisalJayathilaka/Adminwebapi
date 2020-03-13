@@ -1,7 +1,6 @@
 import React from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Swal from 'sweetalert2'
 import axios from 'axios';
 
 class App extends React.Component {
@@ -13,12 +12,13 @@ class App extends React.Component {
       Title:'',
       Description:'',
       Price:'',
-      ImgPath:'',
+      Img:'',
       searchVal:'',
       ErrorMsg:'',
       toastTheme:'',
       SubmitBtnType:'SUBMIT',
-      editChanger:''
+      editChanger:'',
+      imgSrc:''
     }
    
   }
@@ -37,7 +37,8 @@ class App extends React.Component {
         ErrorMsg:'',
         toastTheme:'',
         SubmitBtnType:'SUBMIT',
-        editChanger:''
+        editChanger:'',
+        imgSrc:''
       })
         
     }
@@ -63,8 +64,17 @@ class App extends React.Component {
 
   fileChange=event=>{
     let file=event.target.files[0]
+    var reader = new FileReader();
+    var url = reader.readAsDataURL(file);
+  
+     reader.onloadend = function (e) {
+        this.setState({
+            imgSrc: [reader.result],
+            ImgPath:''
+        })
+      }.bind(this);
     this.setState({
-      ImgPath:file,
+      Img:file,
       editChanger:'imgUpdate'
     })
   }
@@ -88,7 +98,7 @@ class App extends React.Component {
   }
 
   submit(event,id){
-    let file=this.state.ImgPath
+    let file=this.state.Img
     let formData=new FormData()
 
     formData.append('ImgPath',file)
@@ -166,10 +176,9 @@ class App extends React.Component {
     axios.get(`http://localhost:4000/products/${id}`)
     .then((res)=>{
       var imgUrl = `http://localhost:4000/${res.data.ImgPath}`;
-      var newimgUrl=imgUrl.replace("Product/","");
       this.setState({
         id:res.data._id,
-        ImgPath:newimgUrl,
+        ImgPath:imgUrl,
         Title:res.data.Title,
         Description:res.data.Description,
         Price:res.data.Price,
@@ -202,24 +211,31 @@ class App extends React.Component {
     <div className="col s6">
       <form onSubmit={(e)=>this.submit(e,this.state.id)}>
         <div className="input-field col s12">
+        <label >Title</label>
+        </div>
+        <div className="input-field col s12">
+          <input value={this.state.Title} onChange={(e)=>this.titleChange(e)} type="text" />
           
-          <input value={this.state.Title} onChange={(e)=>this.titleChange(e)} type="text" id="autocomplete-input" className="autocomplete"  />
-          <label htmlFor="autocomplete-input">Title</label>
         </div>
         <div className="input-field col s12">
-         
-          <input value={this.state.Description} onChange={(e)=>this.descriptionChange(e)} type="text" id="autocomplete-input" className="autocomplete"  />
-          <label htmlFor="autocomplete-input">Description</label>
+        <label >Description</label>
         </div>
         <div className="input-field col s12">
-         
-          <input value={this.state.Price} onChange={(e)=>this.priceChange(e)} type="text" id="autocomplete-input" className="autocomplete"  />
-          <label htmlFor="autocomplete-input">Price</label>
+          <input value={this.state.Description} onChange={(e)=>this.descriptionChange(e)} type="text" />
+          
+        </div>
+        <div className="input-field col s12">
+        <label >Price</label>
+        </div>
+        <div className="input-field col s12">
+          <input value={this.state.Price} onChange={(e)=>this.priceChange(e)} type="text"  />
+          
         </div>
         <img src={this.state.ImgPath} width="400px"></img>
         <div className="input-field col s12">
           
           <input onChange={(e)=>this.fileChange(e)} type="file" id="autocomplete-input" className="autocomplete"  />
+          <img src={this.state.imgSrc} width="400px"/>
         </div>
         <button className="btn waves-effect waves-light right" type="submit" name="action">{this.state.SubmitBtnType}
                 <i className="material-icons right">send</i>
@@ -228,7 +244,10 @@ class App extends React.Component {
 
     </div>
     <div className="col s6">
+    <div className="input-field col s12">
     <input value={this.state.searchVal} onChange={(e)=>this.searchChange(e)} type="text" id="autocomplete-input" className="autocomplete"  />
+    <label >Search by Title</label>
+    </div>
     <button onClick={(e)=>this.searchByTitle()} className="btn waves-effect waves-light" type="submit" name="action">
                 <i className="material-icons">search</i>
     </button>
@@ -241,6 +260,7 @@ class App extends React.Component {
               <th>Title</th>
               <th>Description</th>
               <th>Price</th>
+              <th>Image</th>
               <th>Edit</th>
               <th>Delete</th>
           </tr>
@@ -252,6 +272,7 @@ class App extends React.Component {
             <td>{product.Title}</td>
             <td>{product.Description}</td>
             <td>{product.Price}</td>
+            <td><img src={`http://localhost:4000/${product.ImgPath}`} width="50px" height="50"/></td>
             <td> 
             <button onClick={(e)=>this.edit(product._id)} className="btn waves-effect waves-light" type="submit" name="action">
                 <i className="material-icons">edit</i>
