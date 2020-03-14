@@ -208,86 +208,95 @@ class App extends React.Component {
   return (
     <div className="row">
     <ToastContainer />   
-    <div className="col s5">
-      <form onSubmit={(e)=>this.submit(e,this.state.id)}>
-        <div className="input-field col s12">
-        <label >Title</label>
-        </div>
-        <div className="input-field col s12">
-          <input value={this.state.Title} onChange={(e)=>this.titleChange(e)} type="text" />
-          
-        </div>
-        <div className="input-field col s12">
-        <label >Description</label>
-        </div>
-        <div className="input-field col s12">
-          <input value={this.state.Description} onChange={(e)=>this.descriptionChange(e)} type="text" />
-          
-        </div>
-        <div className="input-field col s12">
-        <label >Price</label>
-        </div>
-        <div className="input-field col s12">
-          <input value={this.state.Price} onChange={(e)=>this.priceChange(e)} type="text"  />
-          
-        </div>
-        <img src={this.state.ImgPath} width="400px"/>
-        <div className="input-field col s12">
-          
-          <input onChange={(e)=>this.fileChange(e)} type="file" id="autocomplete-input" className="autocomplete"  />
-          <img src={this.state.imgSrc} width="400px"/>
-        </div>
-        <button className="btn waves-effect waves-light right" type="submit" name="action">{this.state.SubmitBtnType}
-                <i className="material-icons right">send</i>
-        </button>
-      </form>
-
-    </div>
-    <div className="col s7">
-    <div className="input-field col s12">
-    <input value={this.state.searchVal} onChange={(e)=>this.searchChange(e)} type="text" id="autocomplete-input" className="autocomplete"  />
-    <label >Search by Title</label>
-    </div>
-    <button onClick={(e)=>this.searchByTitle()} className="btn waves-effect waves-light" type="submit" name="action">
-                <i className="material-icons">search</i>
-    </button>
-    <button onClick={(e)=>this.reset()} className="btn waves-effect waves-light" type="submit" name="action">
-                <i className="material-icons">cached</i>
-    </button>
-    <table>
-        <thead>
-          <tr>
-              <th>Title</th>
-              <th>Description</th>
-              <th>Price</th>
-              <th>Image</th>
-              <th>Edit</th>
-              <th>Delete</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {this.state.products.map(product=>
-            <tr key={product._id}>
-            <td>{product.Title}</td>
-            <td>{product.Description}</td>
-            <td>{product.Price}</td>
-            <td><img src={`http://localhost:4000/${product.ImgPath.replace("Product\\","")}`} width="50px" height="50"/></td>
-            <td> 
-            <button onClick={(e)=>this.edit(product._id)} className="btn waves-effect waves-light" type="submit" name="action">
-                <i className="material-icons">edit</i>
+    <div className="col s5 col-sm-12 col-xs-12">
+      <div class="meta-row">
+          <form onSubmit={(e)=>this.submit(e,this.state.id)}>
+            <div className="input-field col s12">
+            <label >Title</label>
+            </div>
+            <div className="input-field col s12">
+              <input value={this.state.Title} onChange={(e)=>this.titleChange(e)} type="text" />
+              
+            </div>
+            <div className="input-field col s12">
+            <label >Description</label>
+            </div>
+            <div className="input-field col s12">
+              <input value={this.state.Description} onChange={(e)=>this.descriptionChange(e)} type="text" />              
+            </div>            
+            <div className="col s12">
+              <div class="product-img-label">
+                <label >Product Image</label>
+              </div>
+            </div>
+            <div className="input-field col s12">
+              <img src={this.state.ImgPath} width="400px"/>              
+              <input onChange={(e)=>this.fileChange(e)} type="file" id="autocomplete-input" className="autocomplete"  />
+              <img src={this.state.imgSrc} width="400px"/>
+            </div>
+            <div className="input-field col s12">
+              <label >Price</label>
+            </div>
+            <div className="input-field col s12">
+              <input value={this.state.Price} onChange={(e)=>this.priceChange(e)} type="text"  />              
+            </div>
+            <button className="btn waves-effect waves-light right" type="submit" name="action">{this.state.SubmitBtnType}
+                    <i className="material-icons right">send</i>
             </button>
-            </td>
-            <td>
-            <button onClick={(e)=>this.delete(product._id)} className="btn waves-effect waves-light" type="submit" name="action">
-                <i className="material-icons">delete</i>
-            </button>
-            </td>
-          </tr>
-            )}
-          
-        </tbody>
-      </table>
+          </form>
+      </div>
+    </div>
+    <div className="col s7 col-sm-12 col-xs-12">
+      <div class="meta-row">
+        <div className="input-field col s12">
+          <input value={this.state.searchVal} onChange={(e)=>this.searchChange(e)} type="text" id="autocomplete-input" className="autocomplete"  />
+          <label >Search by Title</label>
+        </div>
+        <div class="meta-btn-wrapper">
+          <button onClick={(e)=>this.searchByTitle()} className="btn waves-effect waves-light search-btn" type="submit" name="action">
+                      <i className="material-icons">search</i>
+          </button>
+          <button onClick={(e)=>this.reset()} className="btn waves-effect waves-light reset-btn" type="submit" name="action">
+                      <i className="material-icons">cached</i>
+          </button>
+        </div>
+      </div>
+    <div class="table-wrapper">
+      <table>
+          <thead>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Image</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {this.state.products.map(product=>
+              <tr key={product._id}>
+              <td>{product.Title}</td>
+              <td>{product.Description}</td>
+              <td>{product.Price}</td>
+              <td><img src={`http://localhost:4000/${product.ImgPath.replace("Product\\","")}`} width="50px" height="50"/></td>
+              <td> 
+              <button onClick={(e)=>this.edit(product._id)} className="btn waves-effect waves-light" type="submit" name="action">
+                  <i className="material-icons">edit</i>
+              </button>
+              </td>
+              <td>
+              <button onClick={(e)=>this.delete(product._id)} className="btn waves-effect waves-light" type="submit" name="action">
+                  <i className="material-icons">delete</i>
+              </button>
+              </td>
+            </tr>
+              )}
+            
+          </tbody>
+        </table>
+    </div>
     </div>
     
     </div>

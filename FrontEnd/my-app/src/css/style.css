@@ -1,3 +1,36 @@
+body, html{
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+}
 .input-field>label{
     z-index: -1;
+}
+.meta-btn-wrapper {
+    text-align: right;
+    margin-bottom: 30px;
+}
+.meta-btn-wrapper .btn {
+    margin-left: 20px;
+}
+.meta-row {
+    margin-top: 30px;
+}
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+.table-wrapper table img {
+    width: 100px;
+    height: auto;
+}
+@media (max-width: 991px) and (min-width: 768px){
+    .row .col.col-sm-12{
+        width: 100%;
+    }
+}
+@media (max-width: 767px){
+    .row .col.col-xs-12{
+        width: 100%;
+    }
 }
